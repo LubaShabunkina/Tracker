@@ -10,7 +10,10 @@ import UIKit
 final class TrackersViewController: UIViewController {
     private let emptyImageView = UIImageView()
     private let emptyLabel = UILabel()
-
+    private var categories: [TrackerCategory] = []
+    private var completedTrackers: [TrackerRecord] = []
+    private var selectedDate: Date = Date() // например, сегодняшняя дата
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
