@@ -5,9 +5,9 @@
 //  Created by Luba Shabunkina on 27/05/2025.
 //
 
-import Foundation
+import UIKit
 
-struct Tracker: Codable, Equatable {
+struct Tracker: Equatable {
     let id: UUID
     let name: String
     let color: String

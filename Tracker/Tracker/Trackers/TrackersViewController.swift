@@ -69,10 +69,12 @@ final class TrackersViewController: UIViewController, UICollectionViewDelegate {
     }
 
     @objc private func addButtonTapped() {
-        print("Нажата кнопка +")
-        // переход к созданию трекера
+        let createTrackerVC = CreateTrackerViewController()
+            let navController = UINavigationController(rootViewController: createTrackerVC)
+            present(navController, animated: true)
+        }
     }
-}
+
 
 extension TrackersViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
