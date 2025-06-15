@@ -4,7 +4,7 @@ final class ColorCell: UICollectionViewCell {
     private let colorView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 26 // половина от 52 (itemSize)
+        view.layer.cornerRadius = 8 
         return view
     }()
 

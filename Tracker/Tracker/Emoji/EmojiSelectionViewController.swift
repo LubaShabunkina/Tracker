@@ -57,7 +57,7 @@ extension EmojiSelectionViewController: UICollectionViewDataSource, UICollection
             return UICollectionViewCell()
         }
 
-        cell.setEmoji(emojis[indexPath.item])
+        cell.setEmoji(emojis[indexPath.item], isSelected: false)
         return cell
     }
 

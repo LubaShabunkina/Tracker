@@ -35,7 +35,9 @@ final class EmojiCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setEmoji(_ emoji: String) {
+    func setEmoji(_ emoji: String, isSelected: Bool) {
         emojiLabel.text = emoji
+        contentView.layer.borderWidth = isSelected ? 3 : 0
+        contentView.layer.borderColor = isSelected ? UIColor.black.cgColor : nil
     }
 }
