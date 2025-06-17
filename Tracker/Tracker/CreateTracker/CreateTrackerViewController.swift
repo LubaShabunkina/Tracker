@@ -264,7 +264,10 @@ final class CreateTrackerViewController: UIViewController {
     }
 
     @objc private func didTapCreate() {
-        let finalCategory = selectedCategory ?? TrackerCategory(title: "Без категории", trackers: [])
+        guard let finalCategory = selectedCategory else {
+            print("🚨 Категория не выбрана")
+            return
+        }
         let newTracker = Tracker(
             id: UUID(),
             name: nameTextField.text ?? "",
