@@ -56,10 +56,10 @@ final class TrackersViewController: UIViewController, UICollectionViewDelegate {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         setupNavigationBar()
-        setupEmptyState()
+        
         
         view.addSubview(collectionView)
-
+        setupEmptyState()
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
