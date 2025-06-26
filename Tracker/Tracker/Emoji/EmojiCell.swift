@@ -23,7 +23,7 @@ final class EmojiCell: UICollectionViewCell {
         contentView.layer.cornerRadius = 12
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor.systemGray4.cgColor
-        contentView.backgroundColor = .systemGray6
+       // contentView.backgroundColor = .systemGray6
 
         NSLayoutConstraint.activate([
             emojiLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),

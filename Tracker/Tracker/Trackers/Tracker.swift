@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct Tracker: Equatable {
+struct Tracker: Equatable, Hashable {
     let id: UUID
     let name: String
     let color: String

@@ -7,8 +7,14 @@
 
 import UIKit
 
+protocol CreateTrackerTypeViewControllerDelegate: AnyObject {
+    func didCreateTracker(_ tracker: Tracker, in category: TrackerCategory)
+}
+
 final class CreateTrackerTypeViewController: UIViewController {
 
+    weak var typeDelegate: CreateTrackerTypeViewControllerDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -52,13 +58,22 @@ final class CreateTrackerTypeViewController: UIViewController {
 
     @objc private func habitTapped() {
         let vc = CreateTrackerViewController(trackerType: .habit)
+        vc.delegate = self
         let nav = UINavigationController(rootViewController: vc)
         present(nav, animated: true)
     }
 
     @objc private func irregularTapped() {
         let vc = CreateTrackerViewController(trackerType: .irregular)
+        vc.delegate = self
         let nav = UINavigationController(rootViewController: vc)
         present(nav, animated: true)
+    }
+}
+
+extension CreateTrackerTypeViewController: CreateTrackerViewControllerDelegate {
+    func didCreateTracker(_ tracker: Tracker, in category: TrackerCategory) {
+        typeDelegate?.didCreateTracker(tracker, in: category)
+        dismiss(animated: true)
     }
 }

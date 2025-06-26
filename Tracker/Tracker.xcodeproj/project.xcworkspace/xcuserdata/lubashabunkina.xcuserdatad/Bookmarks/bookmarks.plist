@@ -94,6 +94,51 @@
 			<key>type</key>
 			<string>bookmark</string>
 		</dict>
+		<dict>
+			<key>destination</key>
+			<dict>
+				<key>location-parameters</key>
+				<dict>
+					<key>EndingColumnNumber</key>
+					<string>0</string>
+					<key>EndingLineNumber</key>
+					<string>237</string>
+					<key>StartingColumnNumber</key>
+					<string>0</string>
+					<key>StartingLineNumber</key>
+					<string>236</string>
+					<key>Timestamp</key>
+					<string>772667790.7370811</string>
+				</dict>
+				<key>rebasable-url</key>
+				<dict>
+					<key>base</key>
+					<string>workspace</string>
+					<key>payload</key>
+					<dict>
+						<key>relative-path</key>
+						<string>Tracker/CreateTracker/CreateTrackerViewController.swift</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>text-context</key>
+			<dict>
+				<key>focused</key>
+				<string>    private func createOptionButton(title: String) -&gt; UIButton {
+</string>
+				<key>leading</key>
+				<string>    }
+
+</string>
+				<key>trailing</key>
+				<string>        let button = UIButton(type: .system)
+        button.setTitle(title, for: .normal)
+        button.contentHorizontalAlignment = .left
+</string>
+			</dict>
+			<key>type</key>
+			<string>bookmark</string>
+		</dict>
 	</array>
 </dict>
 </plist>

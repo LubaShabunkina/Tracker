@@ -7,7 +7,6 @@
 
 import UIKit
 
-import UIKit
 
 final class StatisticsViewController: UIViewController {
 

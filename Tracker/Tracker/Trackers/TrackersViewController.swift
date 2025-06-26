@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class TrackersViewController: UIViewController, UICollectionViewDelegate {
+final class TrackersViewController: UIViewController, UICollectionViewDelegate, CreateTrackerTypeViewControllerDelegate {
     
     private let emptyImageView = UIImageView()
     private let emptyLabel = UILabel()
@@ -79,6 +79,8 @@ final class TrackersViewController: UIViewController, UICollectionViewDelegate {
             target: self,
             action: #selector(addButtonTapped)
         )
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
+        navigationItem.leftBarButtonItem?.tintColor = .black
     }
     
     private func updateUI() {
@@ -115,12 +117,22 @@ final class TrackersViewController: UIViewController, UICollectionViewDelegate {
         ])
     }
     
+    private lazy var datePicker: UIDatePicker = {
+        let picker = UIDatePicker()
+        picker.preferredDatePickerStyle = .compact
+        picker.datePickerMode = .date
+        picker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
+        picker.tintColor = .black
+        return picker
+    }()    
+    
     @objc private func addButtonTapped() {
-        let createVC = CreateTrackerViewController(trackerType: .habit)
-        createVC.delegate = self
-        let navVC = UINavigationController(rootViewController: createVC)
-        present(navVC, animated: true)
-    }
+            let typeVC = CreateTrackerTypeViewController()
+            typeVC.typeDelegate = self
+            let nav = UINavigationController(rootViewController: typeVC)
+            present(nav, animated: true)
+        }
+    
     
     @objc private func dateChanged(_ sender: UIDatePicker) {
         selectedDate = sender.date

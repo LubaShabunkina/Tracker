@@ -11,7 +11,7 @@ protocol CreateTrackerViewControllerDelegate: AnyObject {
     func didCreateTracker(_ tracker: Tracker, in category: TrackerCategory)
 }
 
-final class CreateTrackerViewController: UIViewController {
+final class CreateTrackerViewController: UIViewController, UITextFieldDelegate {
 
     // MARK: - Data
 
@@ -116,10 +116,18 @@ final class CreateTrackerViewController: UIViewController {
         setupActions()
         updateCreateButtonState()
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
 
     private func setupNavigation() {
         navigationItem.title = trackerType == .habit ? "Новая привычка" : "Новое нерегулярное событие"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Отменить", style: .plain, target: self, action: #selector(didTapCancel))
         
     }
 
@@ -139,7 +147,7 @@ final class CreateTrackerViewController: UIViewController {
         scrollView.addSubview(contentView)
         contentView.translatesAutoresizingMaskIntoConstraints = false
 
-        [titleLabel, nameTextField, categoryButton, scheduleButton, emojiTitleLabel, emojiCollection, colorTitleLabel, colorCollection, createButton].forEach {
+        [titleLabel, nameTextField, categoryButton, scheduleButton, emojiTitleLabel, emojiCollection, colorTitleLabel, colorCollection].forEach {
             contentView.addSubview($0)
         }
 
@@ -158,16 +166,16 @@ final class CreateTrackerViewController: UIViewController {
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 24),
             titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
 
-            nameTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 24),
-            nameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            nameTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            nameTextField.heightAnchor.constraint(equalToConstant: 48),
+            nameTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
+            nameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
+            nameTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            nameTextField.heightAnchor.constraint(equalToConstant: 75),
 
-            scheduleButton.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 32),
-            scheduleButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            scheduleButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            scheduleButton.heightAnchor.constraint(equalToConstant: 50),
-
+            scheduleButton.topAnchor.constraint(equalTo: categoryButton.bottomAnchor),
+            scheduleButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
+            scheduleButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            scheduleButton.heightAnchor.constraint(equalToConstant: 75),
+            
             emojiTitleLabel.topAnchor.constraint(equalTo: scheduleButton.bottomAnchor, constant: 40),
             emojiTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
 
@@ -183,20 +191,30 @@ final class CreateTrackerViewController: UIViewController {
             colorCollection.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             colorCollection.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             colorCollection.heightAnchor.constraint(equalToConstant: 120),
-
-            createButton.topAnchor.constraint(equalTo: colorCollection.bottomAnchor, constant: 32),
-            createButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            createButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            createButton.heightAnchor.constraint(equalToConstant: 60),
-            createButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -32),
             
-            categoryButton.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 32),
-            categoryButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            categoryButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            categoryButton.heightAnchor.constraint(equalToConstant: 50),
+            categoryButton.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 16),
+            categoryButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
+            categoryButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            categoryButton.heightAnchor.constraint(equalToConstant: 75),
 
-            scheduleButton.topAnchor.constraint(equalTo: categoryButton.bottomAnchor, constant: 16),
-        ])
+            
+            ])
+            
+            let buttonStack = UIStackView(arrangedSubviews: [cancelButton, saveButton])
+            buttonStack.axis = .horizontal
+            buttonStack.spacing = 8
+            buttonStack.distribution = .fillEqually
+            buttonStack.translatesAutoresizingMaskIntoConstraints = false
+
+            contentView.addSubview(buttonStack)
+
+            NSLayoutConstraint.activate([
+                buttonStack.topAnchor.constraint(equalTo: colorCollection.bottomAnchor, constant: 32),
+                buttonStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+                buttonStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+                buttonStack.heightAnchor.constraint(equalToConstant: 60),
+                buttonStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -32),
+            ])
     }
 
     private static func sectionLabel(text: String) -> UILabel {
@@ -209,14 +227,16 @@ final class CreateTrackerViewController: UIViewController {
 
     private func setupActions() {
         nameTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
-        createButton.addTarget(self, action: #selector(didTapCreate), for: .touchUpInside)
         scheduleButton.addTarget(self, action: #selector(didTapSchedule), for: .touchUpInside)
         categoryButton.addTarget(self, action: #selector(didTapCategory), for: .touchUpInside)
+        nameTextField.delegate = self
+        cancelButton.addTarget(self, action: #selector(didTapCancel), for: .touchUpInside)
+        saveButton.addTarget(self, action: #selector(didTapCreate), for: .touchUpInside)
     }
 
     private func createOptionButton(title: String) -> UIButton {
         let button = UIButton(type: .system)
-        button.setTitle(title + "  >", for: .normal)
+        button.setTitle(title, for: .normal)
         button.contentHorizontalAlignment = .left
         button.backgroundColor = UIColor.systemGray6
         button.setTitleColor(.label, for: .normal)
@@ -224,9 +244,45 @@ final class CreateTrackerViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }
+    
+    private let cancelButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Отменить", for: .normal)
+        button.backgroundColor = .white
+        button.setTitleColor(.red, for: .normal)
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.red.cgColor
+        button.layer.cornerRadius = 16
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+
+    private let saveButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Создать", for: .normal)
+        button.backgroundColor = .black
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 16
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.isEnabled = false
+        button.alpha = 0.5
+        return button
+    }()
+    
+    private func updateCreateButtonState() {
+        let isNameValid = !(nameTextField.text ?? "").trimmingCharacters(in: .whitespaces).isEmpty
+        let isValid = isNameValid
+            && selectedEmoji != nil
+            && selectedColor != nil
+            && selectedCategory != nil
+            && (trackerType == .irregular || !selectedSchedule.isEmpty)
+        saveButton.isEnabled = isValid
+        saveButton.alpha = isValid ? 1.0 : 0.5
+
+    }
 
     @objc private func textFieldDidChange() {
-        updateCreateButtonState()
+        //updateSaveButtonState()
     }
     
     @objc private func didTapCategory() {
@@ -240,44 +296,30 @@ final class CreateTrackerViewController: UIViewController {
         present(navVC, animated: true)
     }
 
-    private func updateCreateButtonState() {
-        let isNameValid = !(nameTextField.text ?? "").trimmingCharacters(in: .whitespaces).isEmpty
-        let isValid = isNameValid
-            && selectedEmoji != nil
-            && selectedColor != nil
-            && selectedCategory != nil
-            && (trackerType == .irregular || !selectedSchedule.isEmpty)
-
-        print("isNameValid:", isNameValid)
-        print("selectedEmoji:", selectedEmoji)
-        print("selectedColor:", selectedColor)
-        print("selectedCategory:", selectedCategory)
-        print("selectedSchedule:", selectedSchedule)
-        print("Button enabled:", isValid)
-
-        createButton.isEnabled = isValid
-        createButton.backgroundColor = isValid ? .black : .gray
-    }
-
+    
     @objc private func didTapCancel() {
         dismiss(animated: true)
     }
 
     @objc private func didTapCreate() {
-        guard let finalCategory = selectedCategory else {
-            print("🚨 Категория не выбрана")
-            return
-        }
-        let newTracker = Tracker(
-            id: UUID(),
-            name: nameTextField.text ?? "",
-            color: selectedColor?.description ?? "gray", 
-            emoji: selectedEmoji ?? "🙂",
-            schedule: selectedSchedule
-        )
-        delegate?.didCreateTracker(newTracker, in: finalCategory)
+            guard let finalCategory = selectedCategory else {
+                print("🚨 Категория не выбрана")
+                return
+            }
+
+            let newTracker = Tracker(
+                id: UUID(),
+                name: nameTextField.text ?? "",
+                color: selectedColor?.description ?? "gray",
+                emoji: selectedEmoji ?? "🙂",
+                schedule: selectedSchedule
+            )
+
+            delegate?.didCreateTracker(newTracker, in: finalCategory)
+
         dismiss(animated: true)
-    }
+        }
+        
 
     @objc private func didTapSchedule() {
         let scheduleVC = ScheduleViewController()

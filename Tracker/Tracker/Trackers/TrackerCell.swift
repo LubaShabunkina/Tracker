@@ -64,7 +64,7 @@ final class TrackerCell: UICollectionViewCell {
 
     func configure(with tracker: Tracker, isCompleted: Bool, completedDays: Int) {
         self.tracker = tracker
-        backgroundContainer.backgroundColor = UIColor(named: tracker.color) ?? .gray
+       
         emojiLabel.text = tracker.emoji
         nameLabel.text = tracker.name
         daysLabel.text = "\(completedDays) дней"
