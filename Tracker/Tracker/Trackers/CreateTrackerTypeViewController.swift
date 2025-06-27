@@ -74,6 +74,8 @@ final class CreateTrackerTypeViewController: UIViewController {
 extension CreateTrackerTypeViewController: CreateTrackerViewControllerDelegate {
     func didCreateTracker(_ tracker: Tracker, in category: TrackerCategory) {
         typeDelegate?.didCreateTracker(tracker, in: category)
-        dismiss(animated: true)
+        self.dismiss(animated: true)
+        
+        print("🟢 \(tracker.name) добавлен в категорию \(category.title)")
     }
 }

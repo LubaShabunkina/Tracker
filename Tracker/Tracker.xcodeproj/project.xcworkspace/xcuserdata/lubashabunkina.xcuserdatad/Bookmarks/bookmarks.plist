@@ -128,7 +128,7 @@
 </string>
 				<key>leading</key>
 				<string>    }
-
+    
 </string>
 				<key>trailing</key>
 				<string>        let button = UIButton(type: .system)

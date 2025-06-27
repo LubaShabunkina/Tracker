@@ -20,9 +20,15 @@ final class TrackersViewController: UIViewController, UICollectionViewDelegate, 
     private func updateVisibleCategories() {
         let calendarWeekday = Calendar.current.component(.weekday, from: selectedDate)
         let weekdayIndex = (calendarWeekday + 5) % 7 + 1
+        print("📆 weekdayIndex for selectedDate = \(weekdayIndex)")
+
         visibleCategories = categories.map { category in
             let trackersForDay = category.trackers.filter {
-                $0.schedule.contains { $0.rawValue == weekdayIndex }
+                let match = $0.schedule.contains { $0.rawValue == weekdayIndex }
+                if !match {
+                    print("⛔️ '\($0.name)' НЕ отображается — schedule: \($0.schedule.map { $0.rawValue })")
+                }
+                return match
             }
             return TrackerCategory(title: category.title, trackers: trackersForDay)
         }
