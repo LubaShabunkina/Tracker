@@ -54,6 +54,7 @@ final class TrackerCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        completeButton.translatesAutoresizingMaskIntoConstraints = false
         completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
         setupLayout()
     }
@@ -64,11 +65,16 @@ final class TrackerCell: UICollectionViewCell {
 
     func configure(with tracker: Tracker, isCompleted: Bool, completedDays: Int) {
         self.tracker = tracker
-       
+
         emojiLabel.text = tracker.emoji
         nameLabel.text = tracker.name
         daysLabel.text = "\(completedDays) дней"
 
+        // ✅ Установка цвета фона
+        backgroundContainer.backgroundColor = UIColor.from(string: tracker.color)
+        // Или UIColor.from(string: tracker.color)
+
+        // ✅ Кнопка
         let imageName = isCompleted ? "checkmark" : "plus"
         completeButton.setImage(UIImage(systemName: imageName), for: .normal)
         completeButton.alpha = isCompleted ? 0.5 : 1.0
@@ -109,5 +115,17 @@ final class TrackerCell: UICollectionViewCell {
     @objc private func completeButtonTapped() {
         guard let tracker = tracker else { return }
         delegate?.didTapComplete(for: tracker)
+    }
+}
+
+extension UIColor {
+    static func from(string: String) -> UIColor {
+        switch string {
+        case "red": return .systemRed
+        case "green": return .systemGreen
+        case "blue": return .systemBlue
+        // и т.д.
+        default: return .gray
+        }
     }
 }

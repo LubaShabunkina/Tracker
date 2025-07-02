@@ -19,7 +19,7 @@ final class TrackersViewController: UIViewController, UICollectionViewDelegate, 
     
     private func updateVisibleCategories() {
         let calendarWeekday = Calendar.current.component(.weekday, from: selectedDate)
-        let weekdayIndex = (calendarWeekday + 5) % 7 + 1
+        let weekdayIndex = (calendarWeekday + 5) % 7 
         print("📆 weekdayIndex for selectedDate = \(weekdayIndex)")
 
         visibleCategories = categories.map { category in
