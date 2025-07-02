@@ -1,0 +1,12 @@
+//
+//  TrackerCategory.swift
+//  Tracker
+//
+//  Created by Luba Shabunkina on 27/05/2025.
+//
+import Foundation
+
+struct TrackerCategory: Equatable {
+    let title: String
+    var trackers: [Tracker]
+}
